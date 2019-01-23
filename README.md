@@ -52,6 +52,6 @@ if err := db.Delete("blog", ""); err != nil {
 
 // List all database collections
 list := db.List()
-for _, file := range list {
-    fmt.Println(file)
+for _, collection := range list {
+    fmt.Println(collection)
 }
