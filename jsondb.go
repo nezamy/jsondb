@@ -22,7 +22,6 @@ type (
 	}
 )
 
-
 // New creates a new jsondb database at the desired directory location, and
 // returns a *Driver to then use for interacting with the database
 func New(dir string) (*Driver, error) {
@@ -159,6 +158,18 @@ func (d *Driver) ReadAll(collection string) ([]string, error) {
 
 	// unmarhsal the read files as a comma delimeted byte array
 	return records, nil
+}
+
+// List all database collections
+func (d *Driver) List() []string {
+	files, _ := ioutil.ReadDir(d.dir)
+	var records []string
+	for _, file := range files {
+		if file.IsDir() {
+			records = append(records, file.Name())
+		}
+	}
+	return records
 }
 
 // Delete locks that database and then attempts to remove the collection/resource

@@ -8,25 +8,24 @@ Install using `go get github.com/nezamy/jsondb`.
 
 ```go
 // a new jsondb driver, providing the directory where it will be writing to,
-// and a qualified logger if desired
-db, err := jsondb.New(dir, nil)
+db, err := jsondb.New("database_name")
 if err != nil {
   fmt.Println("Error", err)
 }
 
-// Write a blog to the database
+// Write a collection to the database
 blog := Blog{}
 if err := db.Write("blog", "helloWorld", blog); err != nil {
   fmt.Println("Error", err)
 }
 
-// Read a blog from the database (passing blog by reference)
+// Read from collection (passing blog by reference)
 firstPost := Blog{}
 if err := db.Read("blog", "firstPost", &firstPost); err != nil {
   fmt.Println("Error", err)
 }
 
-// Read all fish from the database, unmarshaling the response.
+// Read all records from the collection
 records, err := db.ReadAll("blog")
 if err != nil {
   fmt.Println("Error", err)
@@ -41,12 +40,18 @@ for _, f := range records {
   posts = append(posts, postFound)
 }
 
-// Delete a blog from the database
+// Delete a record from the database
 if err := db.Delete("blog", "firstPost"); err != nil {
   fmt.Println("Error", err)
 }
 
-// Delete all blog from the database
+// Delete collection from the database
 if err := db.Delete("blog", ""); err != nil {
   fmt.Println("Error", err)
+}
+
+// List all database collections
+list := db.List()
+for _, file := range list {
+    fmt.Println(file)
 }
